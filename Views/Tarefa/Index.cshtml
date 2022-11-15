@@ -1,48 +1,70 @@
-@model IEnumerable<TarefasMVC.Models.Tarefa>
-  @{
-    ViewData["Title"] = "Tarefas";
-  }
+@model TarefasMVC.Models.Filters
+@{
+  ViewData["Title"] = "Tarefas";
+}
 
   <h2>@ViewData["Title"]</h2>
 
-<div>
-  <a asp-action="Criar" class="btn btn-primary">
-    Criar
-<i class="bi bi-journal-plus"></i>
-  </a>
-  <a asp-action="Editar" class="btn btn-outline-primary">
-    Editar
-    <i class="bi bi-pencil-square"></i>
-  </a>
-  <a asp-action="Deletar" class="btn btn-danger">
-    Deletar
-<i class="bi bi-journal-x"></i>
-  </a>
+<div class="container row">
+
+  <div class="row">
+    <form asp-action="Buscar" class="form-group row" >
+      <div class="input-group col">
+        <input asp-for="BuscaString" type="text" class="form-control" placeholder="Buscar" />
+        <button type="submit" class="btn btn-outline-primary">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+      <div class="input-group col">
+        <label asp-for="Inicial" class="control-label"></label>
+        <input type="date" asp-for="Inicial" class="form-control" />
+      </div>
+      <div class="input-group col">
+        <label asp-for="Final" class="control-label"></label>
+        <input type="date" asp-for="Final" class="form-control" />
+      </div>
+      <div class="input-group col" >
+        <label asp-for="Status" class="control-label"></label>
+          <select class="form-select" asp-for="Status" asp-items="@Html.GetEnumSelectList<EnumStatusTarefa>()">
+          </select>    
+      </div>
+    </form>
+  </div>
 </div>
 
 <table class="table">
   <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.Id)
+          @Html.DisplayNameFor(model => Model.Tarefas[0]!.Id)
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Titulo)
+          @Html.DisplayNameFor(model => Model.Tarefas[0]!.Titulo)
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Descricao)
+          @Html.DisplayNameFor(model => Model.Tarefas[0]!.Descricao)
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Data)
+          @Html.DisplayNameFor(model => Model.Tarefas[0]!.Data)
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Status)
+          @Html.DisplayNameFor(model => Model.Tarefas[0]!.Status)
         </th>
-      </tr>>
+        <th></th>
+        <th>
+
+          <div class="col">
+    <a asp-action="Criar" class=" btn btn-primary">
+      Criar
+      <i class="bi bi-journal-plus"></i>
+    </a>
+  </div>
+        </th>
+      </tr>
     </thead>
     <tbody>
-      @foreach (var item in Model)
-      { 
+      @foreach (var item in Model.Tarefas!)
+      {
         <tr>
           <td>
             @Html.DisplayFor(model=> item.Id)
@@ -58,6 +80,17 @@
           </td>
           <td>
             @Html.DisplayFor(model=> item.Status)
+          </td>
+        <td></td>
+          <td>
+            <a asp-action="Editar" asp-route-id="@item.Id" class="btn btn-outline-primary" >
+              Editar
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <a asp-action="Deletar" asp-route-id="@item.Id" class="btn btn-danger">
+              Deletar
+              <i class="bi bi-journal-x"></i>
+            </a>
           </td>
         </tr>
       }
